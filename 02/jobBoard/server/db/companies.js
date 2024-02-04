@@ -1,7 +1,5 @@
-import { connection } from './connection.js';
-
-const getCompanyTable = () => connection.table('company');
+import CompanyModel from './models/company.model.js'
 
 export async function getCompany(id) {
-  return await getCompanyTable().first().where({ id });
+  return await CompanyModel.findById(id);
 }

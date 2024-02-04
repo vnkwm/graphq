@@ -6,7 +6,8 @@ const companySchema = new mongoose.Schema({
   name: String,
   description: String
 }, {
-  timestamps: true
+  timestamps: true,
+  collection: 'companies',
 });
 
 const CompanyModel = mongoose.model('Company', companySchema);

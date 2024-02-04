@@ -3,7 +3,11 @@
 import mongoose from 'mongoose';
 
 const jobSchema = new mongoose.Schema({
-  companyId: String,
+  companyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Company',
+    required: true,
+  },
   title: String,
   description: String,
 }, {

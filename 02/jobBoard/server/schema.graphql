@@ -1,15 +1,21 @@
 type Query {
   jobs: [Job]
+  company: Company
 }
 
+"""
+This `is` __job__
+"""
 type Job {
   id: ID,
-  companyId: String,
+  """This is company ID lmao"""
+  companyId: Company!
   title: String
   description: String
-  # deptId: Dept!
+  createdAt: String
 }
 
-# type Dept {
-#   id: String!
-# }
+type Company {
+  name: String
+  description: String
+}
