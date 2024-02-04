@@ -1,43 +1,39 @@
-import { connection } from './connection.js';
-import { generateId } from './ids.js';
-
-const getJobTable = () => connection.table('job');
+import JobModel from './models/job.model.js'
 
 export async function getJobs() {
-  return await getJobTable().select();
+  return await JobModel.find();
 }
 
 export async function getJob(id) {
-  return await getJobTable().first().where({ id });
+  return await JobModel.findById(id);
 }
 
 export async function createJob({ companyId, title, description }) {
-  const job = {
-    id: generateId(),
+  const job = await JobModel.create({
     companyId,
     title,
     description,
-    createdAt: new Date().toISOString(),
-  };
-  await getJobTable().insert(job);
-  return job;
+  });
+  return job.toObject();
 }
 
 export async function deleteJob(id) {
-  const job = await getJobTable().first().where({ id });
+  const job = await JobModel.findById(id);
   if (!job) {
     throw new Error(`Job not found: ${id}`);
   }
-  await getJobTable().delete().where({ id });
-  return job;
+  await job.remove();
+  return job.toObject();
 }
 
 export async function updateJob({ id, title, description }) {
-  const job = await getJobTable().first().where({ id });
+  const job = await JobModel.findByIdAndUpdate(
+    id,
+    { title, description },
+    { new: true }
+  );
   if (!job) {
     throw new Error(`Job not found: ${id}`);
   }
-  const updatedFields = { title, description };
-  await getJobTable().update(updatedFields).where({ id });
-  return { ...job, ...updatedFields };
+  return job.toObject();
 }
