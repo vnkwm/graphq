@@ -4,24 +4,24 @@ import { formatDate } from '../lib/formatters';
 function JobList({ jobs }) {
   return (
     <ul className="box">
-      {jobs.map((job) => (
-        <JobItem key={job.id} job={job} />
+      {jobs?.map((job) => (
+        <JobItem key={job?.id} job={job} />
       ))}
     </ul>
   );
 }
 
 function JobItem({ job }) {
-  const title = job.company
-    ? `${job.title} at ${job.company.name}`
-    : job.title;
+  const title = job?.company
+    ? `${job?.title} at ${job?.company?.name ?? ''}`
+    : job?.title;
   return (
     <li className="media">
       <div className="media-left has-text-grey">
-        {formatDate(job.date)}
+        {formatDate(job?.createdAt)}
       </div>
       <div className="media-content">
-        <Link to={`/jobs/${job.id}`}>
+        <Link to={`/jobs/${job?.id}`}>
           {title}
         </Link>
       </div>

@@ -1,21 +1,60 @@
 type Query {
   jobs: [Job]
   company: Company
+  user: User
+  job(id: ID!): Job
+  companyById(id: ID!): Company
+}
+
+type Mutation {
+  createJob(input: CreateJobInput!): Job
+  createUser(input: CreateUserInput!): User
+  deleteJob(id: ID!): Job
+  updateJob(input: UpdateJobInput!): Job
 }
 
 """
 This `is` __job__
 """
 type Job {
-  id: ID,
-  """This is company ID lmao"""
-  companyId: Company!
+  id: ID
+  """
+  This is company ID lmao
+  """
+  company: Company!
   title: String
   description: String
   createdAt: String
 }
 
 type Company {
+  id: ID!
   name: String
+  description: String
+  jobs: [Job]
+}
+
+type User {
+  id: ID!
+  email: String
+  password: String
+  token: String
+  companyId: String
+}
+
+input CreateJobInput {
+  title: String!
+  description: String
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  companyId: String!
+}
+
+input UpdateJobInput {
+  id: ID!
+  title: String
   description: String
 }
