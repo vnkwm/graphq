@@ -23,8 +23,7 @@ export async function deleteJob(id) {
   if (!job) {
     throw new Error(`Job not found: ${id}`);
   }
-  console.log('job dsklfjdskl', job)
-  await job.remove();
+  await job.deleteOne({_id: id});
   return job.toObject();
 }
 
