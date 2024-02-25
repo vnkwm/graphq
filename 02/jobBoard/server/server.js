@@ -19,7 +19,7 @@ const typeDefs = await readFile("./schema.graphql", "utf8");
 
 const apolloServer = new ApolloServer({ typeDefs, resolvers });
 await apolloServer.start();
-app.use("/graphql", apolloMiddleware(apolloServer));
+app.use("/graphql", apolloMiddleware(apolloServer, { context: getContext }));
 
 /************** mongoose start */
 mongoose.connect("mongodb://localhost:27017/jobBoard", {
@@ -37,6 +37,10 @@ connection.once("open", () => {
   console.log("Connected to MongoDB");
 });
 /************** mongoose end */
+
+function getContext({ req }) {
+  return { auth: req.auth };
+}
 
 app.listen({ port: PORT }, () => {
   console.log(`Server is running on ${PORT}`);

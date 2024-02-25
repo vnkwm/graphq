@@ -11,6 +11,7 @@ export const authMiddleware = expressjwt({
 });
 
 export const handleLogin = async (req, res) => {
+  console.log('auth is', req?.auth);
   const { email, password } = req.body;
   const user = await getUserByEmail(email);
 

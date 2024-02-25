@@ -3,12 +3,18 @@ import { createUser } from "./db/users.js";
 import { getCompany } from "./db/companies.js";
 import mongoose from "mongoose";
 import JobModel from "./db/models/job.model.js";
+import { GraphQLError } from "graphql";
 
 export const resolvers = {
   Query: {
     jobs: () => getJobs(),
     user: () => getUser(),
-    job: (_root, args) => {
+    job: (_root, args, context) => {
+      console.log("context: ", context)
+      if (!context.auth) {
+        throw unauthorizedError("Unauthorized error");
+        // return null;
+      }
       return getJob(args.id);
     },
     companyById: (_root, args) => {
@@ -68,4 +74,8 @@ export const resolvers = {
 
 function toIsoDate(value) {
   return value.slice(0, "yyyy-mm-dd".length);
+}
+
+function unauthorizedError(message) {
+  throw new GraphQLError(message, {extensions: { code: 'UNAUTHORIZED'}})
 }
