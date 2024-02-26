@@ -6,6 +6,7 @@ import { readFile } from "node:fs/promises";
 import { resolvers } from "./resolvers.js";
 import mongoose from "mongoose";
 import { authMiddleware, handleLogin } from "./auth.js";
+import { getUserById } from "./db/users.js";
 
 const PORT = 9000;
 
@@ -38,8 +39,13 @@ connection.once("open", () => {
 });
 /************** mongoose end */
 
-function getContext({ req }) {
-  return { auth: req.auth };
+async function getContext({ req }) {
+  if (req?.auth) {
+    // if (Object.values(req?.auth).length) {
+    const user = await getUserById(req?.auth?.sub);
+    return { user };
+  }
+  return { user: {} };
 }
 
 app.listen({ port: PORT }, () => {
